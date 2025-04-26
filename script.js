@@ -9,7 +9,7 @@ formBuscar.addEventListener("submit", async (e) => {
   const sku = document.getElementById("sku").value;
 
   try {
-    const resposta = await fetch(`${apiBaseUrl}/buscar-produto/${sku}`);
+    const resposta = await fetch(`https://location-updater.onrender.com/buscar-produto/${sku}`);
     const dados = await resposta.json();
 
     document.getElementById("info-produto").style.display = "block";
@@ -28,7 +28,7 @@ formAtualizar.addEventListener("submit", async (e) => {
   const depositoId = document.getElementById("depositoId").value;
 
   try {
-    const resposta = await fetch(`${apiBaseUrl}/atualizar-localizacao`, {
+    const resposta = await fetch(`https://location-updater.onrender.com/atualizar-localizacao`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
