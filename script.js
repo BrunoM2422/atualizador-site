@@ -28,7 +28,6 @@ formAtualizar.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const localizacao = document.getElementById("localizacao").value;
-  const depositoId = document.getElementById("depositoId").value;
 
   if (!produtoId) {
     alert("Nenhum produto selecionado!");
@@ -41,7 +40,7 @@ formAtualizar.addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ produtoId, localizacao, depositoId }), // <-- Agora manda produtoId
+      body: JSON.stringify({ produtoId, localizacao }), // 🚀 Corrigido aqui!
     });
 
     const dados = await resposta.json();
