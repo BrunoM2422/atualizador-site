@@ -14,15 +14,32 @@ formBuscar.addEventListener("submit", async (e) => {
     const resposta = await fetch(`${apiBaseUrl}/buscar-produto/${sku}`);
     const dados = await resposta.json();
 
-    document.getElementById("info-produto").style.display = "block";
-    document.getElementById("nome-produto").innerText = dados.retorno.produto.nome;
+    const produto = dados.retorno.produto;
 
-    produtoId = dados.retorno.produto.id; // <-- Aqui você guarda o ID do produto
+    document.getElementById("info-produto").style.display = "block";
+    document.getElementById("nome-produto").innerText = produto.nome || "Sem nome";
+    document.getElementById("preco-produto").innerText = produto.preco || "0,00";
+    document.getElementById("localizacao-atual").innerText = produto.depositos?.[0]?.localizacao || "Não informada";
+
+    produtoId = produto.id;
+
+    // Exibir imagem (se houver)
+    const imagemContainer = document.getElementById("imagem-container");
+    imagemContainer.innerHTML = ""; // Limpa anterior
+    if (produto.imagem) {
+      const img = document.createElement("img");
+      img.src = produto.imagem;
+      img.alt = "Imagem do produto";
+      img.style.maxWidth = "100%";
+      imagemContainer.appendChild(img);
+    }
+
   } catch (erro) {
     console.error(erro);
     alert("Erro ao buscar produto!");
   }
 });
+
 
 formAtualizar.addEventListener("submit", async (e) => {
   e.preventDefault();

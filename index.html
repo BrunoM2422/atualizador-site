@@ -16,13 +16,17 @@
 
     <div id="info-produto" style="display:none;">
       <p><strong>Nome:</strong> <span id="nome-produto"></span></p>
-
+      <p><strong>Preço:</strong> R$ <span id="preco-produto"></span></p>
+      <p><strong>Localização atual:</strong> <span id="localizacao-atual"></span></p>
+      <div id="imagem-container" style="margin: 10px 0;"></div>
+    
       <form id="form-atualizar">
         <input type="text" id="localizacao" placeholder="Nova Localização" required>
         <input type="hidden" id="depositoId" value="1">
         <button type="submit">Atualizar Localização</button>
       </form>
     </div>
+    
 
     <div id="mensagem"></div>
   </div>
