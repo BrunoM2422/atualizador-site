@@ -1,9 +1,9 @@
-const apiBaseUrl = "https://location-updater.onrender.com"; // Seu servidor no Render
+const apiBaseUrl = "https://location-updater.onrender.com";
 
 const formBuscar = document.getElementById("form-buscar");
 const formAtualizar = document.getElementById("form-atualizar");
 
-let produtoId = null; // <-- Variável para guardar o ID do produto
+let produtoId = null;
 
 formBuscar.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -17,10 +17,19 @@ formBuscar.addEventListener("submit", async (e) => {
 
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
-    document.getElementById("preco-produto").innerText = produto.preco || "N/A";
-    document.getElementById("localizacao-atual").innerText = produto.localizacao || "Não informada";
 
-    // Mostrar imagem, se houver
+    // Formatar o preço
+    const precoFormatado = produto.preco
+      ? parseFloat(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+      : "Não informado";
+    document.getElementById("preco-produto").innerText = precoFormatado;
+
+    // Localização, unidade e estoque
+    document.getElementById("localizacao-atual").innerText = produto.localizacao || "Não informada";
+    document.getElementById("unidade-produto").innerText = produto.unidade || "Não informada";
+    document.getElementById("estoque-produto").innerText = produto.estoque ?? "0";
+
+    // Imagem do produto
     const imagemEl = document.getElementById("imagem-produto");
     if (produto.imagem) {
       imagemEl.src = produto.imagem;
@@ -36,8 +45,6 @@ formBuscar.addEventListener("submit", async (e) => {
     alert("Erro ao buscar produto!");
   }
 });
-
-
 
 formAtualizar.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -55,12 +62,12 @@ formAtualizar.addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ produtoId, localizacao }), // 🚀 Corrigido aqui!
+      body: JSON.stringify({ produtoId, localizacao }),
     });
 
     const dados = await resposta.json();
-
     document.getElementById("mensagem").innerText = dados.mensagem;
+
   } catch (erro) {
     console.error(erro);
     alert("Erro ao atualizar localização!");
