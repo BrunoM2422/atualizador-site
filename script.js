@@ -25,11 +25,20 @@ formBuscar.addEventListener("submit", async (e) => {
     document.getElementById("preco-produto").innerText = precoFormatado;
 
     // Localização, unidade e estoque
-    document.getElementById("localizacao-atual").innerText = produto.localizacao || "Não informada";
-    document.getElementById("unidade-produto").innerText = produto.unidade || "Não informada";
-    document.getElementById("estoque-produto").innerText = produto.estoque ?? "0";
+    document.getElementById("info-produto").style.display = "block";
+    document.getElementById("nome-produto").innerText = produto.nome;
+    document.getElementById("preco-produto").innerText = `R$ ${Number(produto.preco).toFixed(2).replace('.', ',')}`;
+    document.getElementById("localizacao-atual").innerText = 
+      produto.depositos && produto.depositos.length > 0 && produto.depositos[0].localizacao
+        ? produto.depositos[0].localizacao
+        : "Não informada";
+    document.getElementById("estoque-produto").innerText = 
+      produto.depositos && produto.depositos.length > 0
+        ? produto.depositos[0].quantidade
+        : produto.estoque || 0;
+    document.getElementById("unidade-produto").innerText = produto.unidade || "N/A";
 
-    // Imagem do produto
+    // Mostrar imagem, se houver
     const imagemEl = document.getElementById("imagem-produto");
     if (produto.imagem) {
       imagemEl.src = produto.imagem;
@@ -37,6 +46,7 @@ formBuscar.addEventListener("submit", async (e) => {
     } else {
       imagemEl.style.display = "none";
     }
+
 
     produtoId = produto.id;
 

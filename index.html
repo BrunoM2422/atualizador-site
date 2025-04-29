@@ -14,14 +14,15 @@
       <button type="submit">Buscar Produto</button>
     </form>
 
-    <div id="info-produto" style="display:none;">
-      <img id="imagem-produto" src="" alt="Imagem do produto" style="max-width: 100px; display: none;">
+    <div id="info-produto" style="display: none">
       <p><strong>Nome:</strong> <span id="nome-produto"></span></p>
-      <p><strong>Preço:</strong> R$ <span id="preco-produto"></span></p>
+      <p><strong>Preço:</strong> <span id="preco-produto"></span></p>
       <p><strong>Localização atual:</strong> <span id="localizacao-atual"></span></p>
       <p><strong>Unidade:</strong> <span id="unidade-produto"></span></p>
       <p><strong>Estoque:</strong> <span id="estoque-produto"></span></p>
-
+      <img id="imagem-produto" style="display: none; width: 100px; height: auto;" />
+    </div>
+    
     
       <form id="form-atualizar">
         <input type="text" id="localizacao" placeholder="Nova Localização" required>
