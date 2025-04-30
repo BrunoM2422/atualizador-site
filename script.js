@@ -4,10 +4,10 @@ const formBuscar = document.getElementById("form-buscar");
 const formAtualizar = document.getElementById("form-atualizar");
 
 let produtoId = null;
+let depositoId = null;
 
 formBuscar.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const sku = document.getElementById("sku").value;
 
   try {
@@ -17,28 +17,11 @@ formBuscar.addEventListener("submit", async (e) => {
 
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
-
-    // Formatar o preço
-    const precoFormatado = produto.preco
-      ? parseFloat(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-      : "Não informado";
-    document.getElementById("preco-produto").innerText = precoFormatado;
-
-    // Localização, unidade e estoque
-    document.getElementById("info-produto").style.display = "block";
-    document.getElementById("nome-produto").innerText = produto.nome;
-    document.getElementById("preco-produto").innerText = `R$ ${Number(produto.preco).toFixed(2).replace('.', ',')}`;
-    document.getElementById("localizacao-atual").innerText = 
-      produto.depositos && produto.depositos.length > 0 && produto.depositos[0].localizacao
-        ? produto.depositos[0].localizacao
-        : "Não informada";
-    document.getElementById("estoque-produto").innerText = 
-      produto.depositos && produto.depositos.length > 0
-        ? produto.depositos[0].quantidade
-        : produto.estoque || 0;
+    document.getElementById("preco-produto").innerText = `R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}`;
+    document.getElementById("localizacao-atual").innerText = produto.localizacao;
+    document.getElementById("estoque-produto").innerText = produto.estoque;
     document.getElementById("unidade-produto").innerText = produto.unidade || "N/A";
 
-    // Mostrar imagem, se houver
     const imagemEl = document.getElementById("imagem-produto");
     if (produto.imagem) {
       imagemEl.src = produto.imagem;
@@ -47,8 +30,8 @@ formBuscar.addEventListener("submit", async (e) => {
       imagemEl.style.display = "none";
     }
 
-
     produtoId = produto.id;
+    depositoId = produto.depositoId;
 
   } catch (erro) {
     console.error(erro);
@@ -61,23 +44,20 @@ formAtualizar.addEventListener("submit", async (e) => {
 
   const localizacao = document.getElementById("localizacao").value;
 
-  if (!produtoId) {
-    alert("Nenhum produto selecionado!");
+  if (!produtoId || !depositoId) {
+    alert("Produto ou depósito inválido.");
     return;
   }
 
   try {
     const resposta = await fetch(`${apiBaseUrl}/atualizar-localizacao`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ produtoId, localizacao }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ produtoId, localizacao, depositoId }),
     });
 
     const dados = await resposta.json();
     document.getElementById("mensagem").innerText = dados.mensagem;
-
   } catch (erro) {
     console.error(erro);
     alert("Erro ao atualizar localização!");
