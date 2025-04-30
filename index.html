@@ -1,34 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Atualizar Localização - Bling</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Atualizar Localização</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Atualizar Localização de Produto</h1>
+    <h2>Atualizar Localização de Produto</h2>
 
-    <form id="form-buscar">
-      <input type="text" id="sku" placeholder="Digite o SKU do produto" required />
-      <button type="submit">Buscar Produto</button>
-    </form>
+    <input type="text" id="codigoBarras" placeholder="Digite o código de barras" />
+    <button onclick="buscarProduto()">Buscar Produto</button>
 
-    <div id="info-produto" style="display: none">
-      <p><strong>Nome:</strong> <span id="nome-produto"></span></p>
-      <p><strong>Preço:</strong> <span id="preco-produto"></span></p>
-      <p><strong>Localização atual:</strong> <span id="localizacao-atual"></span></p>
-      <p><strong>Unidade:</strong> <span id="unidade-produto"></span></p>
-      <p><strong>Estoque:</strong> <span id="estoque-produto"></span></p>
-      <img id="imagem-produto" style="display: none; width: 100px;" />
+    <div class="produto-info" id="produtoInfo" style="display: none;">
+      <p><strong>Nome:</strong> <span id="nomeProduto"></span></p>
+      <p><strong>Preço:</strong> R$ <span id="precoProduto"></span></p>
+      <p><strong>Localização atual:</strong> <span id="localizacaoProduto"></span></p>
+      <p><strong>Estoque:</strong> <span id="estoqueProduto"></span></p>
+
+      <input type="text" id="novaLocalizacao" placeholder="Nova Localização" />
+      <button onclick="atualizarLocalizacao()">Atualizar Localização</button>
     </div>
-
-    <form id="form-atualizar">
-      <input type="text" id="localizacao" placeholder="Nova Localização" required />
-      <button type="submit">Atualizar Localização</button>
-    </form>
-
-    <div id="mensagem"></div>
   </div>
 
   <script src="script.js"></script>

@@ -1,66 +1,51 @@
-const apiBaseUrl = "https://location-updater.onrender.com";
-
-const formBuscar = document.getElementById("form-buscar");
-const formAtualizar = document.getElementById("form-atualizar");
-
 let produtoId = null;
 let depositoId = null;
 
-formBuscar.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const sku = document.getElementById("sku").value;
+function buscarProduto() {
+  const codigo = document.getElementById("codigoBarras").value;
 
-  try {
-    const resposta = await fetch(`${apiBaseUrl}/buscar-produto/${sku}`);
-    const dados = await resposta.json();
-    const produto = dados.retorno.produto;
+  fetch(`/buscar-produto?codigo=${codigo}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Produto não encontrado");
+      return res.json();
+    })
+    .then(data => {
+      produtoId = data.id;
+      depositoId = data.depositoId || 1;
 
-    document.getElementById("info-produto").style.display = "block";
-    document.getElementById("nome-produto").innerText = produto.nome;
-    document.getElementById("preco-produto").innerText = `R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}`;
-    document.getElementById("localizacao-atual").innerText = produto.localizacao;
-    document.getElementById("estoque-produto").innerText = produto.estoque;
-    document.getElementById("unidade-produto").innerText = produto.unidade || "N/A";
+      document.getElementById("nomeProduto").textContent = data.nome;
+      document.getElementById("precoProduto").textContent = data.preco;
+      document.getElementById("localizacaoProduto").textContent = data.localizacao || "Não informada";
+      document.getElementById("estoqueProduto").textContent = data.estoque;
 
-    const imagemEl = document.getElementById("imagem-produto");
-    if (produto.imagem) {
-      imagemEl.src = produto.imagem;
-      imagemEl.style.display = "block";
-    } else {
-      imagemEl.style.display = "none";
-    }
+      document.getElementById("produtoInfo").style.display = "block";
+    })
+    .catch(err => {
+      alert("Produto ou depósito inválido.");
+      console.error(err);
+    });
+}
 
-    produtoId = produto.id;
-    depositoId = produto.depositoId;
+function atualizarLocalizacao() {
+  const novaLocalizacao = document.getElementById("novaLocalizacao").value;
 
-  } catch (erro) {
-    console.error(erro);
-    alert("Erro ao buscar produto!");
-  }
-});
-
-formAtualizar.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const localizacao = document.getElementById("localizacao").value;
-
-  if (!produtoId) {
-    alert("Produto inválido.");
+  if (!novaLocalizacao) {
+    alert("Informe a nova localização.");
     return;
   }
-  
 
-  try {
-    const resposta = await fetch(`${apiBaseUrl}/atualizar-localizacao`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ produtoId, localizacao, depositoId }),
+  fetch("/atualizar-localizacao", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ produtoId, depositoId, localizacao: novaLocalizacao })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Erro ao atualizar");
+      alert("Localização atualizada com sucesso!");
+      document.getElementById("localizacaoProduto").textContent = novaLocalizacao;
+    })
+    .catch(err => {
+      alert("Erro ao atualizar localização.");
+      console.error(err);
     });
-
-    const dados = await resposta.json();
-    document.getElementById("mensagem").innerText = dados.mensagem;
-  } catch (erro) {
-    console.error(erro);
-    alert("Erro ao atualizar localização!");
-  }
-});
+}
