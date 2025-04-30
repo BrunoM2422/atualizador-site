@@ -44,10 +44,11 @@ formAtualizar.addEventListener("submit", async (e) => {
 
   const localizacao = document.getElementById("localizacao").value;
 
-  if (!produtoId || !depositoId) {
-    alert("Produto ou depósito inválido.");
+  if (!produtoId) {
+    alert("Produto inválido.");
     return;
   }
+  
 
   try {
     const resposta = await fetch(`${apiBaseUrl}/atualizar-localizacao`, {
