@@ -26,7 +26,8 @@ formBuscar.addEventListener("submit", async (e) => {
     document.getElementById("preco-produto").innerText = precoFormatado;
 
     // LOCALIZAÇÃO DIRETA
-    document.getElementById("localizacao-atual").innerText = produto.localizacao || "Não informada";
+    document.getElementById("localizacao-atual").innerText = dados.localizacao || "Não informada";
+
 
     produtoId = produto.id;
   } catch (erro) {
