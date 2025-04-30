@@ -1,4 +1,4 @@
-const apiBaseUrl = "https://location-updater.onrender.com"; // Seu servidor no Render
+const apiBaseUrl = "https://location-updater.onrender.com";
 
 const formBuscar = document.getElementById("form-buscar");
 const formAtualizar = document.getElementById("form-atualizar");
@@ -25,10 +25,8 @@ formBuscar.addEventListener("submit", async (e) => {
     });
     document.getElementById("preco-produto").innerText = precoFormatado;
 
-    // Novo: buscar localização do depósito 1
-    const deposito1 = (produto.depositos || []).find(d => d.depositoId == 1);
-    const localizacaoAtual = deposito1?.localizacao || "Não informada";
-    document.getElementById("localizacao-atual").innerText = localizacaoAtual;
+    // LOCALIZAÇÃO DIRETA
+    document.getElementById("localizacao-atual").innerText = produto.localizacao || "Não informada";
 
     produtoId = produto.id;
   } catch (erro) {
@@ -41,7 +39,6 @@ formAtualizar.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const localizacao = document.getElementById("localizacao").value;
-  const depositoId = document.getElementById("depositoId").value;
 
   if (!produtoId) {
     alert("Nenhum produto selecionado!");
@@ -54,7 +51,7 @@ formAtualizar.addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ produtoId, localizacao, depositoId }),
+      body: JSON.stringify({ produtoId, localizacao }),
     });
 
     const dados = await resposta.json();
