@@ -19,12 +19,16 @@ formBuscar.addEventListener("submit", async (e) => {
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
 
-    // Novo: Preço
     const precoFormatado = parseFloat(produto.preco || 0).toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     });
     document.getElementById("preco-produto").innerText = precoFormatado;
+
+    // Novo: buscar localização do depósito 1
+    const deposito1 = (produto.depositos || []).find(d => d.depositoId == 1);
+    const localizacaoAtual = deposito1?.localizacao || "Não informada";
+    document.getElementById("localizacao-atual").innerText = localizacaoAtual;
 
     produtoId = produto.id;
   } catch (erro) {
