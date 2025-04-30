@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Atualizar Localização</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Atualizador de Localização</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h2>Atualizar Localização de Produto</h2>
+    <h1>Atualizador de Localização</h1>
 
-    <input type="text" id="codigoBarras" placeholder="Digite o código de barras" />
-    <button onclick="buscarProduto()">Buscar Produto</button>
+    <div class="form-group">
+      <label for="sku">SKU do Produto</label>
+      <input type="text" id="sku" placeholder="Digite o SKU do produto" />
+      <button onclick="buscarProduto()">Buscar</button>
+    </div>
 
-    <div class="produto-info" id="produtoInfo" style="display: none;">
-      <p><strong>Nome:</strong> <span id="nomeProduto"></span></p>
-      <p><strong>Preço:</strong> R$ <span id="precoProduto"></span></p>
-      <p><strong>Localização atual:</strong> <span id="localizacaoProduto"></span></p>
-      <p><strong>Estoque:</strong> <span id="estoqueProduto"></span></p>
+    <div id="resultado" class="hidden">
+      <div class="produto-info">
+        <img id="imagemProduto" src="" alt="Imagem do Produto" />
+        <div>
+          <p><strong>Nome:</strong> <span id="nomeProduto"></span></p>
+          <p><strong>Preço:</strong> R$ <span id="precoProduto"></span></p>
+          <p><strong>Estoque:</strong> <span id="estoqueProduto"></span></p>
+          <p><strong>Localização atual:</strong> <span id="localizacaoAtual"></span></p>
+        </div>
+      </div>
 
-      <input type="text" id="novaLocalizacao" placeholder="Nova Localização" />
-      <button onclick="atualizarLocalizacao()">Atualizar Localização</button>
+      <div class="form-group">
+        <label for="novaLocalizacao">Nova Localização</label>
+        <input type="text" id="novaLocalizacao" placeholder="Digite a nova localização" />
+        <button onclick="atualizarLocalizacao()">Atualizar</button>
+      </div>
     </div>
   </div>
 

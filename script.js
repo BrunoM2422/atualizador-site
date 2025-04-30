@@ -1,51 +1,61 @@
-let produtoId = null;
-let depositoId = null;
+let produtoAtual = null;
 
-function buscarProduto() {
-  const codigo = document.getElementById("codigoBarras").value;
+async function buscarProduto() {
+  const sku = document.getElementById("sku").value.trim();
+  if (!sku) return alert("Digite um SKU.");
 
-  fetch(`/buscar-produto?codigo=${codigo}`)
-    .then(res => {
-      if (!res.ok) throw new Error("Produto não encontrado");
-      return res.json();
-    })
-    .then(data => {
-      produtoId = data.id;
-      depositoId = data.depositoId || 1;
+  try {
+    const response = await fetch(`http://localhost:3000/buscar-produto/${sku}`);
+    const data = await response.json();
 
-      document.getElementById("nomeProduto").textContent = data.nome;
-      document.getElementById("precoProduto").textContent = data.preco;
-      document.getElementById("localizacaoProduto").textContent = data.localizacao || "Não informada";
-      document.getElementById("estoqueProduto").textContent = data.estoque;
+    if (!response.ok || !data.retorno) {
+      throw new Error(data.mensagem || "Erro ao buscar produto");
+    }
 
-      document.getElementById("produtoInfo").style.display = "block";
-    })
-    .catch(err => {
-      alert("Produto ou depósito inválido.");
-      console.error(err);
-    });
+    const produto = data.retorno.produto;
+    produtoAtual = produto;
+
+    document.getElementById("nomeProduto").textContent = produto.nome;
+    document.getElementById("precoProduto").textContent = produto.preco;
+    document.getElementById("estoqueProduto").textContent = produto.estoque;
+    document.getElementById("localizacaoAtual").textContent = produto.localizacao || "Não informada";
+    document.getElementById("imagemProduto").src = produto.imagem || "https://via.placeholder.com/100";
+
+    document.getElementById("resultado").classList.remove("hidden");
+
+  } catch (error) {
+    alert(error.message || "Erro ao buscar produto.");
+    document.getElementById("resultado").classList.add("hidden");
+  }
 }
 
-function atualizarLocalizacao() {
-  const novaLocalizacao = document.getElementById("novaLocalizacao").value;
+async function atualizarLocalizacao() {
+  const novaLocalizacao = document.getElementById("novaLocalizacao").value.trim();
 
-  if (!novaLocalizacao) {
-    alert("Informe a nova localização.");
-    return;
+  if (!produtoAtual || !novaLocalizacao) {
+    return alert("Preencha a nova localização.");
   }
 
-  fetch("/atualizar-localizacao", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ produtoId, depositoId, localizacao: novaLocalizacao })
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Erro ao atualizar");
-      alert("Localização atualizada com sucesso!");
-      document.getElementById("localizacaoProduto").textContent = novaLocalizacao;
-    })
-    .catch(err => {
-      alert("Erro ao atualizar localização.");
-      console.error(err);
+  try {
+    const resposta = await fetch("http://localhost:3000/atualizar-localizacao", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        produtoId: produtoAtual.id,
+        localizacao: novaLocalizacao
+      }),
     });
+
+    const data = await resposta.json();
+
+    if (!resposta.ok) throw new Error(data.mensagem || "Erro ao atualizar.");
+
+    alert("Localização atualizada com sucesso!");
+
+    document.getElementById("localizacaoAtual").textContent = novaLocalizacao;
+    document.getElementById("novaLocalizacao").value = "";
+
+  } catch (error) {
+    alert(error.message || "Erro ao atualizar localização.");
+  }
 }
