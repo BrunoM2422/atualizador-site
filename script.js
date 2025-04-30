@@ -14,9 +14,8 @@ formBuscar.addEventListener("submit", async (e) => {
     const resposta = await fetch(`${apiBaseUrl}/buscar-produto/${sku}`);
     const dados = await resposta.json();
 
-    document.getElementById("preco-produto").innerText = parseFloat(dados.retorno.produto.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-document.getElementById("imagem-produto").src = dados.retorno.produto.imagem || "";
-document.getElementById("imagem-produto").alt = dados.retorno.produto.nome;
+    document.getElementById("info-produto").style.display = "block";
+    document.getElementById("nome-produto").innerText = dados.retorno.produto.nome;
 
     produtoId = dados.retorno.produto.id; // <-- Aqui você guarda o ID do produto
   } catch (erro) {
