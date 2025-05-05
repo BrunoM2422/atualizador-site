@@ -1,4 +1,4 @@
-const apiBaseUrl = "https://location-updater.onrender.com";
+const apiBaseUrl = "https://location-updater.onrender.com"; // ou sua URL backend
 
 const formBuscar = document.getElementById("form-buscar");
 const formAtualizar = document.getElementById("form-atualizar");
@@ -15,7 +15,6 @@ formBuscar.addEventListener("submit", async (e) => {
     const dados = await resposta.json();
 
     const produto = dados.retorno.produto;
-    const localizacao = dados.retorno.localizacao;
 
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
@@ -26,7 +25,7 @@ formBuscar.addEventListener("submit", async (e) => {
     });
     document.getElementById("preco-produto").innerText = precoFormatado;
 
-    document.getElementById("localizacao-atual").innerText = localizacao;
+    document.getElementById("novo-preco").value = produto.preco;
 
     produtoId = produto.id;
   } catch (erro) {
@@ -38,29 +37,32 @@ formBuscar.addEventListener("submit", async (e) => {
 formAtualizar.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const localizacao = document.getElementById("localizacao").value;
+  const preco = parseFloat(document.getElementById("novo-preco").value);
 
-  if (!produtoId) {
-    alert("Nenhum produto selecionado!");
+  if (!produtoId || isNaN(preco)) {
+    alert("Preencha os campos corretamente!");
     return;
   }
 
   try {
-    const resposta = await fetch(`${apiBaseUrl}/atualizar-localizacao`, {
+    const resposta = await fetch(`${apiBaseUrl}/atualizar-preco`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ produtoId, localizacao }),
+      body: JSON.stringify({ produtoId, preco }),
     });
 
     const dados = await resposta.json();
     document.getElementById("mensagem").innerText = dados.mensagem;
 
     // Atualiza exibição
-    document.getElementById("localizacao-atual").innerText = localizacao;
+    document.getElementById("preco-produto").innerText = preco.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
   } catch (erro) {
     console.error(erro);
-    alert("Erro ao atualizar localização!");
+    alert("Erro ao atualizar o preço!");
   }
 });
