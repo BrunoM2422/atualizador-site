@@ -19,13 +19,13 @@ formBuscar.addEventListener("submit", async (e) => {
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
 
-    const precoFormatado = parseFloat(produto.preco || 0).toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    });
-    document.getElementById("preco-produto").innerText = precoFormatado;
+    // Exibir quantidade em estoque
+    const saldo = produto.estoque?.saldo;
+    document.getElementById("estoque-produto").innerText = (saldo ?? "0");
 
-    document.getElementById("localizacao-atual").innerText = produto.estoque?.localizacao || "(vazio)";
+    // Exibir localização atual corretamente
+    const localizacao = produto.estoque?.localizacao;
+    document.getElementById("localizacao-atual").innerText = localizacao || "(não definida)";
 
     produtoId = produto.id;
   } catch (erro) {
