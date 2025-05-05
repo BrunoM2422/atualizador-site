@@ -15,6 +15,7 @@ formBuscar.addEventListener("submit", async (e) => {
     const dados = await resposta.json();
 
     const produto = dados.retorno.produto;
+    const localizacao = dados.retorno.localizacao;
 
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
@@ -25,9 +26,7 @@ formBuscar.addEventListener("submit", async (e) => {
     });
     document.getElementById("preco-produto").innerText = precoFormatado;
 
-    // LOCALIZAÇÃO DIRETA
-    document.getElementById("localizacao-atual").innerText = dados.localizacao || "Não informada";
-
+    document.getElementById("localizacao-atual").innerText = localizacao;
 
     produtoId = produto.id;
   } catch (erro) {
@@ -57,6 +56,9 @@ formAtualizar.addEventListener("submit", async (e) => {
 
     const dados = await resposta.json();
     document.getElementById("mensagem").innerText = dados.mensagem;
+
+    // Atualiza exibição
+    document.getElementById("localizacao-atual").innerText = localizacao;
   } catch (erro) {
     console.error(erro);
     alert("Erro ao atualizar localização!");
