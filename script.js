@@ -1,3 +1,4 @@
+// script.js
 const apiBaseUrl = "https://location-updater.onrender.com";
 
 const formBuscar = document.getElementById("form-buscar");
@@ -19,13 +20,16 @@ formBuscar.addEventListener("submit", async (e) => {
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
 
-    const precoFormatado = parseFloat(produto.preco || 0).toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    });
-    document.getElementById("preco-produto").innerText = precoFormatado;
+    document.getElementById("localizacao-atual").innerText =
+      produto.localizacao?.trim() || "(vazio)";
 
-    document.getElementById("localizacao-atual").innerText = produto.estoque?.localizacao || "(vazio)";
+    const img = document.getElementById("imagem-produto");
+    if (produto.imagem) {
+      img.src = produto.imagem;
+      img.style.display = "block";
+    } else {
+      img.style.display = "none";
+    }
 
     produtoId = produto.id;
   } catch (erro) {
