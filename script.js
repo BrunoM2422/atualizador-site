@@ -14,16 +14,14 @@ formBuscar.addEventListener("submit", async (e) => {
     const resposta = await fetch(`${apiBaseUrl}/buscar-produto/${sku}`);
     const dados = await resposta.json();
 
-    const produto = dados.retorno;
+    const produto = dados.retorno.produto;
 
     document.getElementById("info-produto").style.display = "block";
     document.getElementById("nome-produto").innerText = produto.nome;
 
-    // Corrige exibição de estoque
-    const estoque = typeof produto.estoque === "number" ? produto.estoque : 0;
+    const estoque = produto.estoque ?? "0";
     document.getElementById("estoque-produto").innerText = estoque;
 
-    // Corrige exibição de localização
     const localizacao = produto.localizacao?.trim() || "(não definida)";
     document.getElementById("localizacao-atual").innerText = localizacao;
 
