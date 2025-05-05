@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Atualizar Preço - Bling</title>
+  <title>Atualizar Localização - Bling</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>  
   <div class="container">
-    <h1>Atualizar Preço de Produto</h1>
+    <h1>Atualizar Localização de Produto</h1>
 
     <form id="form-buscar">
       <input type="text" id="sku" placeholder="Digite o SKU do produto" required>
@@ -16,11 +16,12 @@
 
     <div id="info-produto" style="display:none;">
       <p><strong>Nome:</strong> <span id="nome-produto"></span></p>
-      <p><strong>Preço atual:</strong> <span id="preco-produto"></span></p>
+      <p><strong>Preço:</strong> <span id="preco-produto"></span></p>
+      <p><strong>Localização atual:</strong> <span id="localizacao-atual"></span></p>
 
       <form id="form-atualizar">
-        <input type="number" id="novo-preco" placeholder="Novo Preço (ex: 149.90)" step="0.01" required>
-        <button type="submit">Atualizar Preço</button>
+        <input type="text" id="localizacao" placeholder="Nova Localização" required>
+        <button type="submit">Atualizar Localização</button>
       </form>
     </div>
 
